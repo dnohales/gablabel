@@ -1,28 +1,144 @@
-/* main.vala
- *
- * Copyright (C) 2010  Damián Nohales
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *  
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *  
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * Author:
- * 	Damián Nohales <damiannohales@gmail.com>
- */
 using Gtk;
 using WebKit;
+using Config;
 
-static int main (string[] args) {
-	stdout.puts("Hello World 2!");
-	return 0;
+namespace Gablabel
+{
+    public class TranslatorWebView : WebView 
+    {
+        public signal void translator_load_started();
+        public signal void translator_load_finished();
+        
+        private const string TRANSLATOR_URL = "http://translate.google.com/";
+        
+        public TranslatorWebView() {
+            this.document_load_finished.connect(on_download_finish);
+        }
+        
+        public void load_translator()
+        {
+			this.translator_load_started();
+            this.navigation_policy_decision_requested.disconnect(analyze_navigation_policy);
+            this.load_uri(TRANSLATOR_URL);
+        }
+        
+        private void reformat_content()
+        {
+			try{
+				string script;
+				FileUtils.get_contents(Config.DATA_DIR + "/content-reformat.js", out script);
+				this.execute_script(script);
+			} catch(Error e){
+			}
+        }
+        
+        private void on_download_finish(WebFrame frame)
+        {
+            this.navigation_policy_decision_requested.connect(analyze_navigation_policy);
+            this.reformat_content();
+            this.translator_load_finished();
+        }
+        
+        private bool analyze_navigation_policy(WebFrame frame, NetworkRequest request, WebNavigationAction action, WebPolicyDecision decision) {
+            decision.ignore();
+            return true;
+        }
+    }
+    
+    public class MainWindow : Window
+    {   
+        private TranslatorWebView webView;
+        private Label auxLabel;
+        private Menu mainMenu;
+        private ToolButton buttonReload;
+        private ImageMenuItem menuItemReload;
+        private bool isFullscreen;
+        
+        public MainWindow() throws Error{
+            //Widgets creation
+            var builder = new Builder();
+            builder.add_from_file(Config.DATA_DIR + "/gablabel.ui");
+            
+            var central_widget = builder.get_object("central_widget") as VBox;
+            (builder.get_object("mainwindow") as Window).remove(central_widget);
+            this.add(central_widget);
+            
+            webView = new TranslatorWebView();
+            (builder.get_object("web_view_parent") as ScrolledWindow).add(webView);
+            
+            auxLabel = builder.get_object("aux_label") as Label;
+            mainMenu = builder.get_object("main_menu") as Menu;
+            buttonReload = builder.get_object("toolbutton_reload") as ToolButton;
+            menuItemReload = builder.get_object("main_menu_reload") as ImageMenuItem;
+            
+            //Signals connection
+            this.destroy.connect(Gtk.main_quit);
+            this.window_state_event.connect(on_window_state_event);
+            
+            webView.translator_load_started.connect(on_translator_load_started);
+            webView.translator_load_finished.connect(on_translator_load_finished);
+            
+            var buttonMainMenu = (builder.get_object("toolbutton_menu") as MenuToolButton);
+            buttonMainMenu.set_menu(mainMenu);
+            buttonMainMenu.clicked.connect(() => { buttonMainMenu.show_menu(); });
+            buttonReload.clicked.connect(webView.load_translator);
+            
+            (builder.get_object("main_menu_fullscreen") as ImageMenuItem).activate.connect(() => {
+				if(this.isFullscreen){
+					this.unfullscreen();
+				} else{
+					this.fullscreen();
+				}
+			});
+            menuItemReload.activate.connect(webView.load_translator);
+            (builder.get_object("main_menu_quit") as ImageMenuItem).activate.connect(Gtk.main_quit);
+        }
+        
+        public void start() {
+            this.default_height = 350;
+            this.default_width = 800;
+            this.show_all();
+            
+            webView.load_translator();
+        }
+        
+        public void on_translator_load_started() {
+            webView.get_parent().hide_all();
+            auxLabel.label = "Loading Google Translator, please wait...";
+            auxLabel.show_all();
+            buttonReload.sensitive = false;
+            menuItemReload.sensitive = false;
+        }
+        
+        public void on_translator_load_finished(){
+            webView.get_parent().show_all();
+            auxLabel.hide_all();
+            buttonReload.sensitive = true;
+            menuItemReload.sensitive = true;
+        }
+        
+        public bool on_window_state_event(Gdk.EventWindowState event){
+			this.isFullscreen = event.new_window_state == Gdk.WindowState.FULLSCREEN;
+			
+			return false;
+		}
+    }
 }
 
+void main(string[] args)
+{
+    Gtk.init(ref args);
+    
+    Intl.bindtextdomain( Config.GETTEXT_PACKAGE, Config.LOCALE_DIR );
+    Intl.bind_textdomain_codeset( Config.GETTEXT_PACKAGE, "UTF-8" );
+    Intl.textdomain( Config.GETTEXT_PACKAGE );
+    
+    try{
+        var window = new Gablabel.MainWindow();
+        window.start();
+            
+        Gtk.main();
+    } catch(Error e){
+        stderr.printf("Failed to load the UI file: " + e.message);
+    }
+}

@@ -10,7 +10,6 @@ namespace Config {
 
     /* Configured paths - these variables are not present in config.h, they are
     * passed to underlying C code as cmd line macros. */
-    public const string PACKAGE_LOCALEDIR; /* /usr/local/share/locale */
-    public const string PACKAGE_DATADIR; /* /usr/local/share/gablabel */
-    public const string PACKAGE_LIBDIR; /* /usr/local/lib/gablabel */
+    public const string LOCALE_DIR; /* /usr/local/share/locale */
+    public const string DATA_DIR; /* /usr/local/share/gablabel */
 }

@@ -6,9 +6,9 @@ VALAFLAGS = \
 	$(VALA_PACKAGES)
 
 INCLUDES = \
-	-DDATADIR=\"$(datadir)\" \
-	-DPACKAGE_DATADIR=\""$(datadir)/gablabel"\" \
-	-DPACKAGE_LOCALEDIR=\""$(datadir)/locale"\" \
+	-DDATAROOT_DIR=\"$(datarootdir)\" \
+	-DDATA_DIR=\""$(datadir)/gablabel"\" \
+	-DLOCALE_DIR=\""$(localedir)"\" \
 	$(GABLABEL_CFLAGS) \
 	-include $(CONFIG_HEADER) 
 

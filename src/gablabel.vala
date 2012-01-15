@@ -18,8 +18,11 @@
  * Author:
  * 	Damián Nohales <damiannohales@gmail.com>
  */
+using Gtk;
+using WebKit;
 
 static int main (string[] args) {
-	stdout.puts("Hello World!");
+	stdout.puts("Hello World 2!");
+	return 0;
 }
 

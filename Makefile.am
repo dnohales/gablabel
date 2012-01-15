@@ -1,13 +1,15 @@
-SUBDIRS = src po data
+SUBDIRS = src po data vapi
 
-EXTRA_DIST = \
+INTLTOOL = \
 	intltool-extract.in \
 	intltool-merge.in \
 	intltool-update.in
+
+EXTRA_DIST = \
+	$(INTLTOOL)
 
 DISTCLEANFILES = \
 	intltool-extract \
 	intltool-merge \
 	intltool-update \
 	po/.intltool-merge-cache 
-

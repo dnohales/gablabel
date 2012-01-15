@@ -1,19 +1,26 @@
+bin_PROGRAMS = gablabel
+
 VALAFLAGS = \
-	--vapidir ../vapi \
+	--vapidir "$(srcdir)/../vapi" \
 	--pkg config \
 	$(VALA_PACKAGES)
 
-AM_CFLAGS = \
+INCLUDES = \
 	-DDATADIR=\"$(datadir)\" \
 	-DPACKAGE_DATADIR=\""$(datadir)/gablabel"\" \
 	-DPACKAGE_LOCALEDIR=\""$(datadir)/locale"\" \
 	$(GABLABEL_CFLAGS) \
 	-include $(CONFIG_HEADER) 
-	
-bin_PROGRAMS = gablabel
 
-gablabel_SOURCES = \
+gablabel_VALASOURCES = \
 	gablabel.vala
+	
+gablabel_SOURCES = \
+	$(gablabel_VALASOURCES)
 
-gablabel_LOADD = \
+gablabel_LDFLAGS = \
 	$(GABLABEL_LIBS)
+
+DISTCLEANFILES = \
+	cd $(distdir) && \
+	rm $(gablabel_VALASOURCES:.vala=.c) gablabel_vala.stamp

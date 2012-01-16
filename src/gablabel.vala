@@ -1,9 +1,27 @@
 using Gtk;
 using WebKit;
 using Config;
+using AppIndicator;
 
 namespace Gablabel
 {
+    public class StatusIconManager
+    {
+        private MainWindow parent;
+        private Indicator indicator;
+        
+        public StatusIconManager(MainWindow parent) throws GLib.Error
+        {
+            var menuBuilder = new Builder();
+            menuBuilder.add_from_file(Config.DATA_DIR + "/statusmenu.ui");
+            
+            this.parent = parent;
+            indicator = new Indicator("Gablabel", "indicator-messages", IndicatorCategory.APPLICATION_STATUS);
+            indicator.set_menu(menuBuilder.get_object("statusmenu") as Menu);
+            indicator.set_status(IndicatorStatus.ACTIVE);
+        }
+    }
+    
     public class TranslatorWebView : WebView 
     {
         public signal void translator_load_started();
@@ -46,7 +64,8 @@ namespace Gablabel
     }
     
     public class MainWindow : Window
-    {   
+    {
+        private StatusIconManager statusIcon;
         private TranslatorWebView webView;
         private Label auxLabel;
         private Menu mainMenu;
@@ -57,7 +76,7 @@ namespace Gablabel
         public MainWindow() throws Error{
             //Widgets creation
             var builder = new Builder();
-            builder.add_from_file(Config.DATA_DIR + "/gablabel.ui");
+            builder.add_from_file(Config.DATA_DIR + "/mainwindow.ui");
             
             var central_widget = builder.get_object("central_widget") as VBox;
             (builder.get_object("mainwindow") as Window).remove(central_widget);
@@ -70,6 +89,8 @@ namespace Gablabel
             mainMenu = builder.get_object("main_menu") as Menu;
             buttonReload = builder.get_object("toolbutton_reload") as ToolButton;
             menuItemReload = builder.get_object("main_menu_reload") as ImageMenuItem;
+            
+            statusIcon = new StatusIconManager(this);
             
             //Signals connection
             this.destroy.connect(Gtk.main_quit);
@@ -91,6 +112,7 @@ namespace Gablabel
 				}
 			});
             menuItemReload.activate.connect(webView.load_translator);
+            (builder.get_object("main_menu_about") as ImageMenuItem).activate.connect(show_about_dialog);
             (builder.get_object("main_menu_quit") as ImageMenuItem).activate.connect(Gtk.main_quit);
         }
         
@@ -121,6 +143,17 @@ namespace Gablabel
 			this.isFullscreen = event.new_window_state == Gdk.WindowState.FULLSCREEN;
 			
 			return false;
+		}
+		
+		public void show_about_dialog(){
+			var dialog = new AboutDialog();
+			
+			dialog.copyright = _("Copyright © 2011 by Damián Nohales");
+			dialog.program_name = _("Gablabel Translator");
+			dialog.version = Config.PACKAGE_VERSION;
+			dialog.authors = {"Damián Nohales <damiannohales@gmail.com>"};
+			
+			dialog.run();
 		}
     }
 }

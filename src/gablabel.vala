@@ -13,7 +13,7 @@ namespace Gablabel
         public StatusIconManager(MainWindow parent) throws GLib.Error
         {
             var menuBuilder = new Builder();
-            menuBuilder.add_from_file(Config.DATA_DIR + "/statusmenu.ui");
+            menuBuilder.add_from_file(Config.DATADIR + "/statusmenu.ui");
             
             this.parent = parent;
             indicator = new Indicator("Gablabel", "indicator-messages", IndicatorCategory.APPLICATION_STATUS);
@@ -44,7 +44,7 @@ namespace Gablabel
         {
 			try{
 				string script;
-				FileUtils.get_contents(Config.DATA_DIR + "/content-reformat.js", out script);
+				FileUtils.get_contents(Config.DATADIR + "/content-reformat.js", out script);
 				this.execute_script(script);
 			} catch(Error e){
 			}
@@ -76,7 +76,7 @@ namespace Gablabel
         public MainWindow() throws Error{
             //Widgets creation
             var builder = new Builder();
-            builder.add_from_file(Config.DATA_DIR + "/mainwindow.ui");
+            builder.add_from_file(Config.DATADIR + "/mainwindow.ui");
             
             var central_widget = builder.get_object("central_widget") as VBox;
             (builder.get_object("mainwindow") as Window).remove(central_widget);
@@ -162,7 +162,7 @@ void main(string[] args)
 {
     Gtk.init(ref args);
     
-    Intl.bindtextdomain( Config.GETTEXT_PACKAGE, Config.LOCALE_DIR );
+    Intl.bindtextdomain( Config.GETTEXT_PACKAGE, Config.LOCALEDIR );
     Intl.bind_textdomain_codeset( Config.GETTEXT_PACKAGE, "UTF-8" );
     Intl.textdomain( Config.GETTEXT_PACKAGE );
     

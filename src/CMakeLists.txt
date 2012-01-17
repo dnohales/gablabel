@@ -1,5 +1,10 @@
 set(VALA_SRC
-	gablabel.vala
+	Application.vala
+	MainWindow.vala
+	StatusIconManager.vala
+	TranslatorWebView.vala
+	KeyBindingManager.vala
+	PreferencesDialogManager.vala
 )
 
 find_package(PkgConfig)
@@ -8,6 +13,7 @@ pkg_check_modules(GIO REQUIRED gio-2.0)
 pkg_check_modules(GTK REQUIRED gtk+-2.0)
 pkg_check_modules(WEBKIT REQUIRED webkit-1.0)
 pkg_check_modules(APPINDICATOR REQUIRED appindicator-0.1)
+pkg_check_modules(GEE REQUIRED gee-1.0)
 
 set(CFLAGS
 	${GOBJECT_CFLAGS} ${GOBJECT_CFLAGS_OTHER}
@@ -15,8 +21,10 @@ set(CFLAGS
 	${GTK_CFLAGS} ${GTK_CFLAGS_OTHER}
 	${WEBKIT_CFLAGS} ${WEBKIT_CFLAGS_OTHER}
 	${APPINDICATOR_CFLAGS} ${APPINDICATOR_CFLAGS_OTHER}
+	${GEE_CFLAGS} ${GEE_CFLAGS_OTHER}
 )
 add_definitions(${CFLAGS})
+add_definitions("--include config.h")
 
 set(LIBS
 	${GOBJECT_LIBRARIES}
@@ -24,6 +32,7 @@ set(LIBS
 	${GTK_LIBRARIES}
 	${WEBKIT_LIBRARIES}
 	${APPINDICATOR_LIBRARIES}
+	${GEE_LIBRARIES}
 )
 
 set(LIB_PATHS
@@ -32,6 +41,7 @@ set(LIB_PATHS
 	${GTK_LIBRARY_DIRS}
 	${WEBKIT_LIBRARY_DIRS}
 	${APPINDICATOR_LIBRARY_DIRS}
+	${GEE_LIBRARY_DIRS}
 )
 link_directories(${LIB_PATHS})
 
@@ -47,6 +57,9 @@ vala_precompile(VALA_C
 	${VALA_SRC}
 PACKAGES 
 	config
+	gee-1.0
+	gdk-x11-2.0
+	x11
 	webkit-1.0
 	gtk+-2.0
 	appindicator-0.1

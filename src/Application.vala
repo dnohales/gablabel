@@ -8,18 +8,15 @@ namespace Gablabel
 			return Application.singleton_instance;
 		}
 		
-		enum BindingName {
-			CLIPBOARD,
-			SELECTED
-		}
-		
 		public MainWindow window { get; private set; }
 		public StatusIconManager statusIcon { get; private set; }
 		public KeyBindingManager keyBindings { get; private set; }
 		public GLib.Settings settings { get; private set; }
-		private Gee.Map<Application.BindingName, string> currentBindings = new Gee.HashMap<Application.BindingName, string>();
+		private Gee.Map<string, string> currentBindings = new Gee.HashMap<string, string>();
 		
 		private Application(string[] args){
+			Application.singleton_instance = this;
+			
 			Gtk.init(ref args);
 
 			Intl.bindtextdomain( Config.GETTEXT_PACKAGE, Config.LOCALEDIR );
@@ -29,18 +26,20 @@ namespace Gablabel
 		
 		public int run(){
 			try{
+				keyBindings = new KeyBindingManager();
+				
+				if(Config.USE_GSETTINGS == 1){
+					settings = new GLib.Settings("es.nohal.Gablabel");
+					on_settings_changed("clipboard-binding");
+					on_settings_changed("selected-binding");
+					settings.changed.connect(on_settings_changed);
+				}
+				
 				window = new Gablabel.MainWindow();
 				statusIcon = new StatusIconManager(window);
+				
 				window.start();
 				statusIcon.start();
-				
-				keyBindings = new KeyBindingManager();
-				keyBindings.bind("<Ctrl><Alt>S", (event) => {
-					statusIcon.on_selected_activated();
-				});
-				
-				settings = new GLib.Settings("es.nohal.gablabel");
-				settings.changed
 				
 				Gtk.main();
 				return 0;
@@ -50,8 +49,36 @@ namespace Gablabel
 			}
 		}
 		
-		private void refreshBindings(){
-			
+		private KeyBindingManager.KeybindingHandlerFunc? handler_func_by_setting(string key)
+		{
+			switch(key)
+			{
+			case "clipboard-binding":
+				return () => {
+					statusIcon.on_clipboard_activated();
+				};
+			case "selected-binding":
+				return () => {
+					statusIcon.on_selected_activated();
+				};
+			default:
+				return null;
+			}
+		}
+		
+		private void on_settings_changed(string key)
+		{
+			switch(key)
+			{
+			case "clipboard-binding":
+			case "selected-binding":
+				if(currentBindings.has_key(key)){
+					keyBindings.unbind(currentBindings[key]);
+				}
+				currentBindings[key] = settings.get_string(key);
+				keyBindings.bind(currentBindings[key], handler_func_by_setting(key));
+				break;
+			}
 		}
 		
 		public static int main(string[] args){

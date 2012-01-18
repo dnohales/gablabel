@@ -20,4 +20,10 @@ include(ValaVersion)
 find_package(Vala)
 ensure_vala_version("0.11.0" MINIMUM)
 
+if(NOT DEFINED USE_GSETTINGS)
+    set(USE_GSETTINGS 1)
+endif()
+
 add_subdirectory(src)
+
+unset(USE_GSETTINGS)

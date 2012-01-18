@@ -1,0 +1,12 @@
+<schemalist>
+    <schema id="es.nohal.Gablabel" path="/apps/gablabel/">
+        <key name="clipboard-binding" type="s">
+            <default>"&lt;Ctrl&gt;&lt;Alt&gt;W"</default>
+            <summary>Key binding for translate clipboard text</summary>
+        </key>
+        <key name="selected-binding" type="s">
+            <default>"&lt;Ctrl&gt;&lt;Alt&gt;S"</default>
+            <summary>Key binding for translate selected text</summary>
+        </key>
+    </schema>
+</schemalist>

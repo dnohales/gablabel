@@ -27,8 +27,6 @@ namespace Gablabel
 			mainMenu = builder.get_object("main_menu") as Menu;
 			buttonReload = builder.get_object("toolbutton_reload") as ToolButton;
 			menuItemReload = builder.get_object("main_menu_reload") as ImageMenuItem;
-			AccelMap.add_entry("<Gablabel>/Clipboard", Gdk.keyval_from_name("r"), Gdk.ModifierType.CONTROL_MASK);
-			menuItemReload.set_accel_path("<Gablabel>/Clipboard");
 			
 			//Signals connection
 			this.delete_event.connect(this.hide_on_delete);
@@ -41,6 +39,7 @@ namespace Gablabel
 			buttonMainMenu.set_menu(mainMenu);
 			buttonMainMenu.clicked.connect(() => { buttonMainMenu.show_menu(); });
 			buttonReload.clicked.connect(webView.load_translator);
+			(builder.get_object("toolbutton_preferences") as ToolButton).clicked.connect(show_preferences_dialog);
 			
 			(builder.get_object("main_menu_fullscreen") as ImageMenuItem).activate.connect(() => {
 				if(this.isFullscreen){
@@ -97,6 +96,7 @@ namespace Gablabel
 			dialog.authors = authors;
 			
 			dialog.run();
+			dialog.destroy();
 		}
 		
 		public void show_preferences_dialog(){

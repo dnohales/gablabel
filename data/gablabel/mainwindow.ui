@@ -68,6 +68,7 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="use_action_appearance">False</property>
+        <property name="use_underline">True</property>
         <property name="use_stock">True</property>
       </object>
     </child>
@@ -102,7 +103,7 @@ translator does not work well</property>
               </packing>
             </child>
             <child>
-              <object class="GtkToolButton" id="toolbutton_about">
+              <object class="GtkToolButton" id="toolbutton_preferences">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="use_action_appearance">False</property>

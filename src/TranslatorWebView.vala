@@ -55,7 +55,6 @@ namespace Gablabel
 				string finalText;
 				finalText = text.replace("\t", "    ").escape("");
 				script = script.replace("@SOURCE_TEXT@", finalText);
-				stdout.printf(script + "\n");
 				this.execute_script(script);
 			} catch(Error e){
 			}

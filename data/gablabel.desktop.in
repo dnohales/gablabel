@@ -1,12 +1,9 @@
-
 [Desktop Entry]
-Name=Gablabel text translator
-Comment=Translate text into many languages
+_Name=Gablabel text translator
+_Comment=Translate text into many languages
 Exec=gablabel
 Terminal=false
 Type=Application
 Icon=gablabel
 StartupNotify=true
 Categories=GNOME;GTK;Utility;Languages;
-X-GNOME-Gettext-Domain=gablabel
-

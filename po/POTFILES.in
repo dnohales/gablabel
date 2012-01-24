@@ -1,2 +1,13 @@
-[encoding: UTF-8]
-src/gablabel.vala
+[encoding: UTF-8] 
+src/Application.vala
+src/KeyBindingManager.vala
+src/MainWindow.vala
+src/PreferencesDialogManager.vala
+src/StatusIconManager.vala
+src/TranslatorWebView.vala
+
+[type: gettext/ini]data/gablabel.desktop.in
+
+[type: gettext/glade]data/gablabel/mainwindow.ui
+[type: gettext/glade]data/gablabel/preferencesdialog.ui
+[type: gettext/glade]data/gablabel/statusmenu.ui

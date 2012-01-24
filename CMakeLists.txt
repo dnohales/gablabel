@@ -40,7 +40,6 @@ add_definitions(-include config.h)
 # 
 file (GLOB _datafiles "${CMAKE_CURRENT_SOURCE_DIR}/data/gablabel/*")
 install (FILES ${_datafiles} DESTINATION "share/gablabel")
-install(FILES ${CMAKE_SOURCE_DIR}/data/gablabel.desktop DESTINATION "share/applications")
 
 
 #
@@ -48,17 +47,15 @@ install(FILES ${CMAKE_SOURCE_DIR}/data/gablabel.desktop DESTINATION "share/appli
 # 
 find_package (Gettext REQUIRED)
 
-add_custom_command (OUTPUT ${CMAKE_SOURCE_DIR}/po/${PROJECT_NAME}.pot
-        COMMAND xgettext -c --files-from ${CMAKE_SOURCE_DIR}/po/potfiles --keyword=_ -o ${CMAKE_SOURCE_DIR}/po/${PROJECT_NAME}.pot --no-wrap --no-location
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        )
+file (GLOB _translations ${CMAKE_SOURCE_DIR}/po/*.po)
+GETTEXT_CREATE_TRANSLATIONS (${CMAKE_SOURCE_DIR}/po/${PROJECT_NAME}.pot ALL ${_translations})
 
-if (${GETTEXT_FOUND} STREQUAL "TRUE")
-        set (HAVE_GETTEXT true)
-        file (GLOB _translations ${CMAKE_SOURCE_DIR}/po/*.po)
-        GETTEXT_CREATE_TRANSLATIONS (${CMAKE_SOURCE_DIR}/po/${PROJECT_NAME}.pot
-                ALL ${_translations})
-endif (${GETTEXT_FOUND} STREQUAL "TRUE")
+#
+# Install internationalized desktop file
+# 
+install(CODE "execute_process(COMMAND intltool-merge -d po \"${CMAKE_SOURCE_DIR}/data/gablabel.desktop.in\" \"${CMAKE_BINARY_DIR}/gablabel.desktop\" WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} OUTPUT_QUIET)")
+install(CODE "message (STATUS \"Generating translated gablabel.desktop\")")
+install(FILES ${CMAKE_BINARY_DIR}/gablabel.desktop DESTINATION "share/applications")
 
 
 #

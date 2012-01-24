@@ -108,7 +108,6 @@ translator does not work well</property>
                 <property name="can_focus">False</property>
                 <property name="use_action_appearance">False</property>
                 <property name="is_important">True</property>
-                <property name="label" translatable="yes">Preferences</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-preferences</property>
               </object>

@@ -28,12 +28,10 @@ namespace Gablabel
 			try{
 				keyBindings = new KeyBindingManager();
 				
-				if(Config.USE_GSETTINGS == 1){
-					settings = new GLib.Settings("es.nohal.Gablabel");
-					on_settings_changed("clipboard-binding");
-					on_settings_changed("selected-binding");
-					settings.changed.connect(on_settings_changed);
-				}
+				settings = new GLib.Settings("es.nohal.Gablabel");
+				on_settings_changed("clipboard-binding");
+				on_settings_changed("selected-binding");
+				settings.changed.connect(on_settings_changed);
 				
 				window = new Gablabel.MainWindow();
 				statusIcon = new StatusIconManager(window);

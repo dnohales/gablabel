@@ -7,15 +7,21 @@ list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 
 #
-# Base bits
+# Application information
+# 
+set(PACKAGE_NAME ${PROJECT_NAME})
+set(PACKAGE_VERSION_MAJOR "0")
+set(PACKAGE_VERSION_MINOR "1")
+set(PACKAGE_VERSION_PATCH "1")
+set(PACKAGE_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${PACKAGE_VERSION_PATCH}")
+set(PACKAGE_STRING "Gablabel ${PACKAGE_VERSION}")
+set (GETTEXT_PACKAGE ${PROJECT_NAME})
+#
+# Directories
 # 
 set (DATADIR_ROOT "${CMAKE_INSTALL_PREFIX}/share")
 set (DATADIR "${DATADIR_ROOT}/gablabel")
 set(LOCALEDIR "${DATADIR_ROOT}/locale")
-set(PACKAGE_NAME "gablabel")
-set(PACKAGE_VERSION "0.1")
-set(PACKAGE_STRING "Gablabel ${PACKAGE_VERSION}")
-set (GETTEXT_PACKAGE "gablabel")
 
 
 add_custom_target (uninstall "${CMAKE_COMMAND}" -P
@@ -33,8 +39,8 @@ add_definitions(-include config.h)
 # Data
 # 
 file (GLOB _datafiles "${CMAKE_CURRENT_SOURCE_DIR}/data/gablabel/*")
-install (FILES ${_datafiles} DESTINATION ${DATADIR})
-#install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/gablabel.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/applications")
+install (FILES ${_datafiles} DESTINATION "share/gablabel")
+install(FILES ${CMAKE_SOURCE_DIR}/data/gablabel.desktop DESTINATION "share/applications")
 
 
 #
@@ -43,7 +49,7 @@ install (FILES ${_datafiles} DESTINATION ${DATADIR})
 find_package (Gettext REQUIRED)
 
 add_custom_command (OUTPUT ${CMAKE_SOURCE_DIR}/po/${PROJECT_NAME}.pot
-        COMMAND xgettext -c --files-from ${CMAKE_SOURCE_DIR}/po/POTFILES.in --keyword=_ -o ${CMAKE_SOURCE_DIR}/po/${PROJECT_NAME}.pot --no-wrap --no-location
+        COMMAND xgettext -c --files-from ${CMAKE_SOURCE_DIR}/po/potfiles --keyword=_ -o ${CMAKE_SOURCE_DIR}/po/${PROJECT_NAME}.pot --no-wrap --no-location
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
         )
 
@@ -107,13 +113,27 @@ add_schema("data/es.nohal.Gablabel.gschema.xml")
 #
 # Icons
 # 
-install(FILES "${CMAKE_SOURCE_DIR}/data/icons/16.png" DESTINATION "${DATADIR_ROOT}/icons/hicolor/16x16/apps" RENAME gablabel.png)
-install(FILES "${CMAKE_SOURCE_DIR}/data/icons/22.png" DESTINATION "${DATADIR_ROOT}/icons/hicolor/22x22/apps" RENAME gablabel.png)
-install(FILES "${CMAKE_SOURCE_DIR}/data/icons/24.png" DESTINATION "${DATADIR_ROOT}/icons/hicolor/24x24/apps" RENAME gablabel.png)
-install(FILES "${CMAKE_SOURCE_DIR}/data/icons/32.png" DESTINATION "${DATADIR_ROOT}/icons/hicolor/32x32/apps" RENAME gablabel.png)
-install(FILES "${CMAKE_SOURCE_DIR}/data/icons/36.png" DESTINATION "${DATADIR_ROOT}/icons/hicolor/36x36/apps" RENAME gablabel.png)
-install(FILES "${CMAKE_SOURCE_DIR}/data/icons/64.png" DESTINATION "${DATADIR_ROOT}/icons/hicolor/64x64/apps" RENAME gablabel.png)
-install(FILES "${CMAKE_SOURCE_DIR}/data/icons/96.png" DESTINATION "${DATADIR_ROOT}/icons/hicolor/96x96/apps" RENAME gablabel.png)
-install(FILES "${CMAKE_SOURCE_DIR}/data/icons/256.png" DESTINATION "${DATADIR_ROOT}/icons/hicolor/256x256/apps" RENAME gablabel.png)
-install(FILES "${CMAKE_SOURCE_DIR}/data/icons/scalable.svg" DESTINATION "${DATADIR_ROOT}/icons/hicolor/scalable/apps" RENAME gablabel.png)
+install(FILES "${CMAKE_SOURCE_DIR}/data/icons/16.png" DESTINATION "share/icons/hicolor/16x16/apps" RENAME gablabel.png)
+install(FILES "${CMAKE_SOURCE_DIR}/data/icons/22.png" DESTINATION "share/icons/hicolor/22x22/apps" RENAME gablabel.png)
+install(FILES "${CMAKE_SOURCE_DIR}/data/icons/24.png" DESTINATION "share/icons/hicolor/24x24/apps" RENAME gablabel.png)
+install(FILES "${CMAKE_SOURCE_DIR}/data/icons/32.png" DESTINATION "share/icons/hicolor/32x32/apps" RENAME gablabel.png)
+install(FILES "${CMAKE_SOURCE_DIR}/data/icons/36.png" DESTINATION "share/icons/hicolor/36x36/apps" RENAME gablabel.png)
+install(FILES "${CMAKE_SOURCE_DIR}/data/icons/64.png" DESTINATION "share/icons/hicolor/64x64/apps" RENAME gablabel.png)
+install(FILES "${CMAKE_SOURCE_DIR}/data/icons/96.png" DESTINATION "share/icons/hicolor/96x96/apps" RENAME gablabel.png)
+install(FILES "${CMAKE_SOURCE_DIR}/data/icons/256.png" DESTINATION "share/icons/hicolor/256x256/apps" RENAME gablabel.png)
+install(FILES "${CMAKE_SOURCE_DIR}/data/icons/scalable.svg" DESTINATION "share/icons/hicolor/scalable/apps" RENAME gablabel.svg)
 
+#
+# Packaging
+# 
+SET(CPACK_GENERATOR "DEB")
+SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Damián Nohales")
+SET(CPACK_PACKAGE_VERSION_MAJOR ${PACKAGE_VERSION_MAJOR})
+SET(CPACK_PACKAGE_VERSION_MINOR ${PACKAGE_VERSION_MINOR})
+SET(CPACK_PACKAGE_VERSION_PATCH ${PACKAGE_VERSION_PATCH})
+SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Gablabel is a simplified and improved interface for Google Translator that's allows you to translate text into many languages.")
+SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING")
+SET(CPACK_DEBIAN_PACKAGE_SECTION "utils")
+SET(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://github.com/eagleoneraptor/gablabel")
+ 
+INCLUDE(CPack)

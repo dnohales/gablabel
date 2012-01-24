@@ -103,3 +103,17 @@ install(TARGETS gablabel RUNTIME DESTINATION bin)
 # 
 include(GSettings)
 add_schema("data/es.nohal.Gablabel.gschema.xml")
+
+#
+# Icons
+# 
+install(FILES "${CMAKE_SOURCE_DIR}/data/icons/16.png" DESTINATION "${DATADIR_ROOT}/icons/hicolor/16x16/apps" RENAME gablabel.png)
+install(FILES "${CMAKE_SOURCE_DIR}/data/icons/22.png" DESTINATION "${DATADIR_ROOT}/icons/hicolor/22x22/apps" RENAME gablabel.png)
+install(FILES "${CMAKE_SOURCE_DIR}/data/icons/24.png" DESTINATION "${DATADIR_ROOT}/icons/hicolor/24x24/apps" RENAME gablabel.png)
+install(FILES "${CMAKE_SOURCE_DIR}/data/icons/32.png" DESTINATION "${DATADIR_ROOT}/icons/hicolor/32x32/apps" RENAME gablabel.png)
+install(FILES "${CMAKE_SOURCE_DIR}/data/icons/36.png" DESTINATION "${DATADIR_ROOT}/icons/hicolor/36x36/apps" RENAME gablabel.png)
+install(FILES "${CMAKE_SOURCE_DIR}/data/icons/64.png" DESTINATION "${DATADIR_ROOT}/icons/hicolor/64x64/apps" RENAME gablabel.png)
+install(FILES "${CMAKE_SOURCE_DIR}/data/icons/96.png" DESTINATION "${DATADIR_ROOT}/icons/hicolor/96x96/apps" RENAME gablabel.png)
+install(FILES "${CMAKE_SOURCE_DIR}/data/icons/256.png" DESTINATION "${DATADIR_ROOT}/icons/hicolor/256x256/apps" RENAME gablabel.png)
+install(FILES "${CMAKE_SOURCE_DIR}/data/icons/scalable.svg" DESTINATION "${DATADIR_ROOT}/icons/hicolor/scalable/apps" RENAME gablabel.png)
+

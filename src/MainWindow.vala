@@ -19,6 +19,8 @@ namespace Gablabel
 			var central_widget = builder.get_object("central_widget") as VBox;
 			(builder.get_object("mainwindow") as Window).remove(central_widget);
 			this.add(central_widget);
+			this.set_default_icon_name("gablabel");
+			this.set_title(_("Gablabel Translator"));
 			
 			webView = new TranslatorWebView();
 			(builder.get_object("web_view_parent") as ScrolledWindow).add(webView);
@@ -90,10 +92,11 @@ namespace Gablabel
 				"Damián Nohales <damiannohales@gmail.com>"
 			};
 			
-			dialog.copyright = _("Copyright © 2011 by Damián Nohales");
+			dialog.copyright = _("Copyright © 2012 by Damián Nohales");
 			dialog.program_name = _("Gablabel Translator");
 			dialog.version = Config.PACKAGE_VERSION;
 			dialog.authors = authors;
+			dialog.logo_icon_name = "gablabel";
 			
 			dialog.run();
 			dialog.destroy();

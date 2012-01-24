@@ -25,7 +25,7 @@ namespace Gablabel
 			itemClipboard = menuBuilder.get_object("clipboard") as MenuItem;
 			itemSelected = menuBuilder.get_object("selected") as MenuItem;
 		
-			indicator = new Indicator("Gablabel", "indicator-messages", IndicatorCategory.APPLICATION_STATUS);
+			indicator = new Indicator("Gablabel", "gablabel", IndicatorCategory.APPLICATION_STATUS);
 			indicator.set_menu(statusmenu);
 		
 			//Signal connection

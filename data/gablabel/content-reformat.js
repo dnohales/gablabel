@@ -17,6 +17,9 @@ removeElementById("gt-logo");
 removeElementById("gt-ft-mkt");
 removeElementById("select_document");
 removeElementById("gt-res-tip");
+setTimeout(function(){
+	removeElementById("gt-bbar-c");
+},1000);
 
 safeElemHandle("gt-res-dict", function(elem){
 	elem.style.marginTop = "0em";

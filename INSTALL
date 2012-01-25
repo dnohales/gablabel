@@ -1,0 +1,18 @@
+                                INSTALL                                    
+------------------------------------------------------------------------
+
+• Build and install Gaffel
+  To build and install Gablabel you need to do the following:
+  $ cd <gablabel source code directory>
+  $ cd build
+  $ cmake ..
+  $ make
+  $ sudo make install
+
+
+• Bugs and feature request
+
+  If you have problems with this installation guide, with Gablabel itself
+  or you want to suggest a new feature to Gablabel, feel free to report i 
+  at https://github.com/eagleoneraptor/gablabel/issues/ .
+

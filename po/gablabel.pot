@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-24 16:44-0300\n"
+"POT-Creation-Date: 2012-01-25 12:42-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,6 +27,16 @@ msgstr ""
 
 #: ../src/MainWindow.vala:95
 msgid "Copyright © 2012 by Damián Nohales"
+msgstr ""
+
+#: ../src/MainWindow.vala:99
+msgid ""
+"Gablabel is a simplified and improved interface for Google Translator that's "
+"allows you to translate text into many languages."
+msgstr ""
+
+#: ../src/MainWindow.vala:102
+msgid "Gablabel website"
 msgstr ""
 
 #: ../src/PreferencesDialogManager.vala:24

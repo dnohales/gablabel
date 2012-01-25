@@ -96,7 +96,25 @@ namespace Gablabel
 			dialog.program_name = _("Gablabel Translator");
 			dialog.version = Config.PACKAGE_VERSION;
 			dialog.authors = authors;
+			dialog.comments = _("Gablabel is a simplified and improved interface for Google Translator that's allows you to translate text into many languages.");
 			dialog.logo_icon_name = "gablabel";
+			dialog.website = "https://github.com/eagleoneraptor/gablabel";
+			dialog.website_label = _("Gablabel website");
+			dialog.license = 
+"""
+Gablabel is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Gablabel is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Gablabel.  If not, see <http://www.gnu.org/licenses/>.
+""";
 			
 			dialog.run();
 			dialog.destroy();

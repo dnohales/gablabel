@@ -74,14 +74,12 @@ namespace Gablabel
 		
 		public void on_clipboard_activated(){
 			parent.set_source_text_from_clipboard();
-			parent.show();
-			parent.get_window().show();
+			parent.present();
 		}
 		
 		public void on_selected_activated(){
 			parent.set_source_text_from_selection();
-			parent.show();
-			parent.get_window().show();
+			parent.present();
 		}
 	}
 }

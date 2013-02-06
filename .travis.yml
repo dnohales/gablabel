@@ -1,0 +1,11 @@
+language: c
+compiler:
+  - gcc
+before_install:
+  - echo "yes" | sudo add-apt-repository ppa:vala-team/ppa
+  - sudo apt-get update -qq
+install: ./ci_install.sh
+script: ./ci_build.sh
+env:
+  - VALAC=valac-0.16
+  - VALAC=valac-0.18
